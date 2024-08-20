@@ -7,9 +7,8 @@ export const generate = async (req, res) => {
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-pro-latest",
-      systemInstruction:
-        "You are a highly skilled data analyst and market researcher that can detect and identify trends in data. You will provide comprehensive and actionable analysis based on the provided data, considering potential biases and ethical implications. Focus on clarity, conciseness, and relevance in your responses.",
+      model: "models/gemini-1.5-flash",
+      systemInstruction: `You are a highly skilled data analyst and market researcher that can detect and identify trends in data. You will provide comprehensive and actionable analysis based on the provided data, considering potential biases and ethical implications. Focus on clarity, conciseness, and relevance in your responses. make sure to use html tags instead of markdown for better formatting. for example <ul> and <li> instead of stars and dashes.`,
     });
 
     const result = await model.generateContentStream(prompt);

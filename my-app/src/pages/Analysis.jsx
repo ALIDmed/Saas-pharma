@@ -12,7 +12,7 @@ const Analysis = () => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/drugs/analysisdrugs", {
+    selectedDrugs && fetch("http://localhost:3001/drugs/analysisdrugs", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -31,7 +31,6 @@ const Analysis = () => {
             growth: calculateGrowth(drug.monthly_search_volume),
           }))
         );
-        console.log("chartData", chartData);
       });
   }, [selectedDrugs]);
 
