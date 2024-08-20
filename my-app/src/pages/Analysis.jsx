@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import { createContext, useState, useEffect } from "react";
 import DrugsComparaison from "@/components/analysis/DrugsComparaison";
 import { calculateGrowth } from "../../utils/index";
-import ChatBot from "react-chatbotify";
+import ChatBotWidget from "@/components/analysis/ChatBotWidget";
 
 export const AnalysisContext = createContext();
 
@@ -47,7 +47,7 @@ const Analysis = () => {
           setChartData,
         }}
       >
-        <ChatBot />
+        <ChatBotWidget />
         <Navbar />
         <div className="w-screen flex justify-center px-4 lg:px-0 mt-28">
           <div className="w-full flex flex-col space-y-12 mx-12">

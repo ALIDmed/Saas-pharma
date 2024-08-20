@@ -29,7 +29,7 @@ const Sidebar = () => {
           </button>
         </div>
         {/* FILTER */}
-        <ul className={`flex-1 px-3 ${!expanded && "space-y-10"}`}>
+        <ul className={`flex-1 px-3 ${!expanded && "space-y-14"}`}>
           <SearchFilter expanded={expanded} />
           <LaboFilter expanded={expanded} />
           <CategoryFilter expanded={expanded} />

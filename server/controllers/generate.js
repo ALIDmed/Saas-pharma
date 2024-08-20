@@ -5,11 +5,9 @@ export const generate = async (req, res) => {
     const prompt = req.body.prompt;
     const jsonData = req.body.jsonData;
 
-    const genAI = new GoogleGenerativeAI(
-      "AIzaSyBq-bSeLMxtIkOyhnTaE_MZXPq6muuJn8s"
-    );
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
-      model: "gemini-pro",
+      model: "gemini-1.5-pro-latest",
       systemInstruction:
         "You are a highly skilled data analyst and market researcher that can detect and identify trends in data. You will provide comprehensive and actionable analysis based on the provided data, considering potential biases and ethical implications. Focus on clarity, conciseness, and relevance in your responses.",
     });
