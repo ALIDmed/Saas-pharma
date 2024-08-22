@@ -3,7 +3,14 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
-const Container = ({ children, className, delay = 0.2, reverse }) => {
+interface Props {
+  className?: string;
+  children: React.ReactNode;
+  delay?: number;
+  reverse?: boolean;
+}
+
+const Container = ({ children, className, delay = 0.2, reverse }: Props) => {
   return (
     <motion.div
       className={cn("w-full h-full", className)}

@@ -22,7 +22,7 @@ const DrugsBarChart = () => {
   const { selectedDrugs, chartData } = useContext(AnalysisContext);
 
   return (
-    <div className="border border-gray-200 p-6 rounded-md w-full flex flex-col space-y-4 min-h-[322px]">
+    <div className="border border-gray-200 p-6 rounded-md w-full flex flex-col space-y-4 h-full">
       <div className="text-xl font-semibold">Drugs Search Volume</div>
       <div className="w-full h-full">
         {chartData.length === 0 || selectedDrugs.length > 10 ? (
