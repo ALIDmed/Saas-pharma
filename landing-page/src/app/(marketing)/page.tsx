@@ -1,3 +1,5 @@
+"use client";
+
 import { Wrapper, Container, Icons } from "@/components";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
@@ -5,18 +7,59 @@ import SectionBadge from "@/components/ui/section-badge";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState, FormEvent } from "react";
 import { features, perks } from "@/constants";
 import { LampContainer } from "@/components/ui/lamp";
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/router";
 
 const HomePage = () => {
+  const [email, setEmail] = useState<string>("");
+
+  const personalEmailDomains: string[] = [
+    "gmail.com",
+    "yahoo.com",
+    "hotmail.com",
+    "outlook.com",
+  ];
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const emailDomain: string | undefined = email.split("@")[1];
+
+    if (emailDomain && personalEmailDomains.includes(emailDomain)) {
+      alert("Please enter a business email address.");
+    } else {
+      try {
+        const response = await fetch(`/api`, {
+          method: "POST",
+          body: JSON.stringify({ email: email }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("Error from backend:", errorData);
+        } else {
+          const data = await response.json();
+          console.log("Response from backend:", data);
+          window.location.href = "https://alidmed.github.io/my-app/";
+        }
+      } catch (e) {
+        console.error("Network error:", e);
+      }
+    }
+  };
+
   return (
     <section className="w-full relative flex items-center justify-center flex-col px-4 md:px-0 py-4">
       {/* hero */}
       <Wrapper>
         <Container>
           <div className="flex flex-col items-center justify-center py-20 h-full">
-            <button className="group relative grid overflow-hidden rounded-full px-4 py-1 shadow-[0_1000px_0_0_hsl(0_0%_20%)_inset] transition-colors duration-200">
+            <button className="group relative grid overflow-hidden rounded-full px-4 py-1 shadow-[0_1000px_0_0_hsl(0_0%_20%)_inset] transition-colors duration-200 cursor-default">
               <span>
                 <span className="spark mask-gradient absolute inset-0 h-[100%] w-[100%] animate-flip overflow-hidden rounded-full [mask:linear-gradient(white,_transparent_50%)] before:absolute before:aspect-square before:w-[200%] before:rotate-[-90deg] before:animate-rotate before:bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)] before:content-[''] before:[inset:0_auto_auto_50%] before:[translate:-50%_-15%]" />
               </span>
@@ -45,7 +88,7 @@ const HomePage = () => {
               </p>
               <div className="hidden md:flex relative items-center justify-center mt-8 md:mt-12 w-full">
                 <Link
-                  href="#"
+                  href="#email"
                   className="flex items-center justify-center w-max rounded-full border-blue-900 bg-white/20 backdrop-blur-lg px-2 py-1 md:py-2 gap-2 md:gap-8 shadow-3xl shadow-background/40 select-none"
                 >
                   <p className="text-foreground text-sm text-center md:text-base font-medium pl-4 pr-4 lg:pr-0">
@@ -165,21 +208,18 @@ const HomePage = () => {
         </Container>
       </Wrapper>
 
-      {/* lamp */}
-      <Wrapper className="flex flex-col items-center justify-center relative">
+      <Wrapper className="flex flex-col items-center justify-center py-12 relative">
         <Container>
           <LampContainer>
             <div className="flex flex-col items-center justify-center relative w-full text-center">
               <h2 className="text-4xl lg:text-5xl xl:text-6xl lg:!leading-snug font-semibold mt-8">
-                Ready to discover Trends
-                <br />
-                on Pharma industry ?
+                Ready to discover Trends <br /> on Pharma industry ?
               </h2>
               <p className="text-muted-foreground mt-6 max-w-md mx-auto">
                 Elevate Your Pharma Strategy with Cutting-Edge Trend Monitoring
               </p>
               <Button variant="default" className="mt-6" asChild>
-                <Link href="/sign-in">
+                <Link href="#email">
                   Get started for free
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
@@ -187,39 +227,47 @@ const HomePage = () => {
             </div>
           </LampContainer>
         </Container>
-        {/* <Container className="relative z-[999999]">
-                    <div className="flex items-center justify-center w-full -mt-40">
-                        <div className="flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between w-full px-4 md:px-8 rounded-lg lg:rounded-2xl border border-border/80 py-4 md:py-8">
-                            <div className="flex flex-col items-start gap-4 w-full">
-                                <h4 className="text-xl md:text-2xl font-semibold">
-                                    Join our newsletter
-                                </h4>
-                                <p className="text-base text-muted-foreground">
-                                    Be up to date with everything about AI builder
-                                </p>
-                            </div>
-                            <div className="flex flex-col items-start gap-2 md:min-w-80 mt-5 md:mt-0 w-full md:w-max">
-                                <form action="#" className="flex flex-col md:flex-row items-center gap-2 w-full md:max-w-xs">
-                                    <Input
-                                        required
-                                        type="email"
-                                        placeholder="Enter your email"
-                                        className="focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-primary duration-300 w-full"
-                                    />
-                                    <Button type="submit" size="sm" variant="secondary" className="w-full md:w-max">
-                                        Subscribe
-                                    </Button>
-                                </form>
-                                <p className="text-xs text-muted-foreground">
-                                    By subscribing you agree with our{" "}
-                                    <Link href="#">
-                                        Privacy Policy
-                                    </Link>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </Container> */}
+        <Container className="relative z-[999999]">
+          <div className="flex items-center justify-center w-full -mt-40">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between w-full px-4 md:px-8 rounded-lg lg:rounded-2xl border border-border/80 py-4 md:py-8">
+              <div className="flex flex-col items-start gap-4 w-full">
+                <h4 className="text-xl md:text-2xl font-semibold">
+                  Enter your email to get access to demo
+                </h4>
+                <p className="text-base text-muted-foreground">
+                  You will be directed to the demo dashboard
+                </p>
+              </div>
+              <div className="flex flex-col items-start gap-2 md:min-w-80 mt-5 md:mt-0 w-full md:w-max" id="email">
+                <form
+                  action="#"
+                  className="flex flex-col md:flex-row items-center gap-2 w-full md:max-w-xs"
+                  onSubmit={handleSubmit}
+                >
+                  <Input
+                    required
+                    type="email"
+                    placeholder="Enter your email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-primary duration-300 w-full"
+                  />
+                  <Button
+                    type="submit"
+                    size="sm"
+                    variant="default"
+                    className="w-full md:w-max"
+                  >
+                    Subscribe
+                  </Button>
+                </form>
+                {/* <p className="text-xs text-muted-foreground">
+                  By subscribing you agree with our{" "}
+                  <Link href="#">Privacy Policy</Link>
+                </p> */}
+              </div>
+            </div>
+          </div>
+        </Container>
       </Wrapper>
     </section>
   );

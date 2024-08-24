@@ -32,7 +32,7 @@ const Navbar = () => {
 
         <div className="flex items-center gap-4">
           <Link
-            href="/sign-in"
+            href="#email"
             className={`font-semibold text-sm bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-700/80 hidden md:flex`}
           >
             Access To Demo
