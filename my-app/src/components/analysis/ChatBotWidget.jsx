@@ -26,26 +26,26 @@ const ChatBotWidget = () => {
         }),
       });
 
-      console.log("response");
-
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);
       }
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder("utf-8");
-      let done = false;
-      let text = "";
+      // const reader = response.body.getReader();
+      // const decoder = new TextDecoder("utf-8");
+      // let done = false;
+      // let text = "";
 
-      while (!done) {
-        const { value, done: streamDone } = await reader.read();
-        done = streamDone;
-        if (value) {
-          const chunkText = decoder.decode(value, { stream: !done });
-          text += chunkText;
-          params.streamMessage(text);
-        }
-      }
+      // while (!done) {
+      //   const { value, done: streamDone } = await reader.read();
+      //   done = streamDone;
+      //   if (value) {
+      //     const chunkText = decoder.decode(value, { stream: !done });
+      //     text += chunkText;
+      //     params.streamMessage(text);
+      //   }
+      // }
+      const data = await response.json();
+      params.injectMessage(data.message);
     } catch (error) {
       console.error("Error fetching data:", error);
       return null;
