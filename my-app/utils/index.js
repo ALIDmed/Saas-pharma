@@ -16,25 +16,22 @@ export const calculateGrowth = (monthyl_search_volume) => {
     return 0;
   }
   let growth;
-  let firstMonth;
   const lastMonth = monthyl_search_volume[monthyl_search_volume.length - 1];
+  let firstMonth;
+
   for (let i = 0; i < monthyl_search_volume.length; i++) {
-    firstMonth = monthyl_search_volume[i];
-    if(firstMonth.search_volume !== 0) {
+    if (monthyl_search_volume[i].search_volume != 0) {
+      firstMonth = monthyl_search_volume[i];
       break;
     }
   }
+
   if (firstMonth.search_volume > lastMonth.search_volume) {
     growth = (firstMonth.search_volume / lastMonth.search_volume) * -1;
   } else {
     growth = lastMonth.search_volume / firstMonth.search_volume;
   }
-
-  if (growth == 1) {
-    return parseInt(growth);
-  } else {
-    return growth.toFixed(1);
-  }
+  return (growth * 100).toFixed(1);
 };
 
 export const month_to_num = (month) => {

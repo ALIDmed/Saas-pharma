@@ -45,7 +45,7 @@ const CardComponent = ({
               >
                 <div className="font-bold">
                   {growth}
-                  {"X"}
+                  {"%"}
                 </div>
                 {growth == 1 ? (
                   <AudioWaveform />
